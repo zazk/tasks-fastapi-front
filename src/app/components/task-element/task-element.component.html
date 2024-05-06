@@ -1,0 +1,14 @@
+<section class="task" class="space-y-4 bg-slate-100 rounded-xl  p-8 m-8" >
+    <h2 class="text-lg font-medium">Task: {{ task.title }}</h2>
+    <p class="task-description">Description: {{ task.description }}</p> 
+    <p class="task-user">User Id: {{ task.user_id }}</p> 
+
+    <h3>Users</h3>
+    <ul>
+        @if (users){
+            @for (user of users; track user.id; let i = $index) {
+                <li >{{ user.fullname }}</li>
+            }
+        }
+    </ul>
+</section>

@@ -1,0 +1,38 @@
+<p>Tasks List</p>
+<div>
+    <button>Create Task</button>
+</div>
+<div>
+    Create Task Form
+    <form [formGroup]="taskForm" (submit)="submitTask()"
+        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2"  for="title">Title</label>
+        <input id="title" type="text" formControlName="title" 
+            class="shadow appearance-none border rounded">
+
+        <label class="block text-gray-700 text-sm font-bold mb-2"  for="description">Description</label>
+        <input id="description" type="text" formControlName="description" 
+            class="shadow appearance-none border rounded">
+
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="user_id">User</label>
+            <select formControlName="user_id" id="user_id" 
+                class="shadow border rounded">
+                <option value="0">N/A</option>
+                @if ((users$ | async); as users){
+                    @for (user of users; track user.id; let i = $index) {
+                        <option value="{{user.id}}">{{ user.fullname }}</option>
+                    }
+                }
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Apply now</button>
+        </div>
+    </form>
+</div>
+@if ((tasks$ | async); as tasks){
+    @for (task of tasks; track task.id; let i = $index) {
+        <app-task-element [users]="( users$ | async )" [task]="task"></app-task-element>
+    }
+}
