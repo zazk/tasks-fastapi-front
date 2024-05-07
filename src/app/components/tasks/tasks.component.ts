@@ -24,6 +24,7 @@ export class TasksComponent {
   users$: Observable<Array<User>> = new Observable();
   
   taskForm = new FormGroup({
+    id: new FormControl(),
     title: new FormControl(''),
     description: new FormControl(''),
     user_id: new FormControl(0)
@@ -35,6 +36,10 @@ export class TasksComponent {
     this.getAllUsers();
   }
   
+  get taskFormIdValue () {
+    return this.taskForm.get('id')?.getRawValue()
+  }
+
   getAllTasks(){
     this.tasks$ = this.taskService.getAll()
   }
@@ -47,7 +52,31 @@ export class TasksComponent {
     console.log("SUBIMIT",this.taskForm.value )
     const task = new Task(this.taskForm.value);
     console.log("FORM", task)
-    this.taskService.create(task).subscribe()
+    if (this.taskFormIdValue) {
+      this.taskService.update(task.id, task).subscribe((r) => this.getAllTasks())
+    } else {
+      this.taskService.create(task).subscribe((r) => this.getAllTasks())
+    }
+
+    this.taskForm.reset()
+    this.taskForm.patchValue({ user_id : 0 })
   }
 
+  handleUpdateTaskStatus(task: Task) {
+    this.taskService.update(task.id, { id: task.id, title: task.title, description: task.description, user_id: task.user_id, status: false }).subscribe((r) => this.getAllTasks())
+  }
+
+  handleDeleteTask(taskId: number) {
+    this.taskService.delete(taskId).subscribe((r) => this.getAllTasks())
+  }
+
+  handleEditTask(task: Task) {
+    window.scroll(0, 0)
+    this.taskForm.patchValue({
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      user_id: task.user_id
+    })
+  }
 }

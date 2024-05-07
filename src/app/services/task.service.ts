@@ -23,7 +23,7 @@ export class TaskService {
     return this.http.put(`${this.url}/${id}`, data);
   }
 
-  delete(id: any): Observable<any> {
+  delete(id: number): Observable<any> {
     return this.http.delete(`${this.url}/${id}`);
   }
 }

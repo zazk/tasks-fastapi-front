@@ -1,14 +1,23 @@
 <section class="task" class="space-y-4 bg-slate-100 rounded-xl  p-8 m-8" >
-    <h2 class="text-lg font-medium">Task: {{ task.title }}</h2>
+    <div class="flex justify-between gap-2">
+        <h2 class="text-lg font-medium flex-1">Task: {{ task.title }}</h2>
+        <p class="flex items-center gap-1">
+            <span class="text-xs font-light" [ngClass]="task.status ? 'text-gray-400' : 'text-gray-500'">{{ task.status ? 'Incomplete' : 'Completed' }}</span>
+            <button *ngIf="task.status; else completed" (click)="onUpdateStatus.emit(task)" class="border border-gray-500 border-solid p-3 rounded-full cursor-pointer inline-block" type="button"></button>
+            <ng-template #completed>
+                <span class="bg-green-700 p-1 rounded-full inlinle-block">
+                    <img class="h-4 w-4 " src="assets/check-icon.svg" alt="Check Icon"/>
+                </span>
+            </ng-template>
+        </p>
+    </div>
+    
     <p class="task-description">Description: {{ task.description }}</p> 
-    <p class="task-user">User Id: {{ task.user_id }}</p> 
+    <p *ngIf="task.user_id" class="task-user">User: {{ userName }}</p> 
 
-    <h3>Users</h3>
-    <ul>
-        @if (users){
-            @for (user of users; track user.id; let i = $index) {
-                <li >{{ user.fullname }}</li>
-            }
-        }
-    </ul>
+    <div class="flex justify-between">
+        <button (click)="onEditTask.emit(task)" class="bg-green-500 text-white px-4 py-2">Edit</button>
+
+        <button (click)="onDeleteTask.emit(task.id)" type="button" class="bg-red-500 text-white px-4 py-2">Delete</button>
+    </div>
 </section>

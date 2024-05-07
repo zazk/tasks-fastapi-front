@@ -1,11 +1,17 @@
 import { User } from "./user.model";
 
+enum ETypeTask {
+    active = 'Active',
+    archived = 'Archived',
+    deleted = 'Deleted',
+}
+
 export class Task {
     id?: any;
     title?: string | null;
     description?: string | null;
     status?: boolean;
-    typeTask? : string;
+    typeTask?: ETypeTask;
     user_id?: number | null;
     user?: User
 
