@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user.model';
+import { User, UserLogin } from '../models/user.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -25,5 +25,13 @@ export class UserService {
 
   delete(id: any): Observable<any> {
     return this.http.delete(`${this.url}/${id}`);
+  }
+
+  login(form: UserLogin): Observable<User> {
+    return this.http.post(`${this.url}/login`, form);
+  }
+
+  tokenValidation() {
+    return sessionStorage.getItem('token') ?? ''
   }
 }

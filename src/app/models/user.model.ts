@@ -10,3 +10,8 @@ export class User {
     status?: boolean;
     tasks?: Task[];
 }
+
+export interface UserLogin {
+    email: string;
+    password: string;
+}
